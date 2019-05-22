@@ -1,1 +1,46 @@
-<div><h1>Welcome to Glimmer!</h1></div>
+<input type="hidden" name="theName" value="{{this.selected.id}}">
+<!--@todo Implement click outside-->
+<div class="relative">
+  <div 
+    class="flex w-full bg-transparent border border-black p-3 cursor-pointer" 
+    onclick={{action expand}}
+    >
+    <span class="flex-grow text-neutral-100">{{this.selected.title}}</span>
+    <span class="mr-3 text-primary-300">{{this.selected.price}}</span>
+    <i class="fas fa-caret-down"></i>
+  </div>
+  {{#if this.isExpanded}}
+    <ul class="absolute top-0 bg-white w-full border shadow-xl">
+      {{#each this.options key="@index" as |option|}}
+        {{#if (eq this.selected option)}}
+          <li 
+            class="cursor-pointer pl-1 pr-3 py-1 bg-primary-600 hover:bg-primary-500"
+            onclick={{action select option}}
+            >
+            <div class="flex items-center">
+              <i class="fas fa-check text-primary-300 text-sm mr-1"></i>
+              <span class="flex-grow text-neutral-100">{{option.title}}</span>
+              <span class="text-xs font-bold text-primary-300">{{option.price}}</span>
+            </div>
+            <p class="text-xs text-neutral-500 pl-5">
+              {{option.description}}
+            </p>
+          </li>
+        {{else}}
+          <li 
+            class="cursor-pointer pl-6 pr-3 py-1 hover:bg-primary-500"
+            onclick={{action select option}}
+            >
+            <div class="flex items-center">
+              <span class="flex-grow text-neutral-100">{{option.title}}</span>
+              <span class="text-xs font-bold text-primary-300">{{option.price}}</span>
+            </div>
+            <p class="text-xs text-neutral-500">
+              {{option.description}}
+            </p>
+          </li>
+        {{/if}}
+      {{/each}}
+    </ul>
+  {{/if}}
+</div>

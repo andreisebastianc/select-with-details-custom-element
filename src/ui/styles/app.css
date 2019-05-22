@@ -1,3 +1,23 @@
-h1 {
-  color: #444;
+.text-primary-300 {
+  color: #0C6C5F;
+}
+
+.text-neutral-500 {
+  color: #546277;
+}
+
+.text-neutral-300 {
+  color: #344154;
+}
+
+.text-neutral-100 {
+  color: #173753;
+}
+
+.bg-primary-600 {
+  background-color: rgb(233, 255, 248);
+}
+
+.hover\:bg-primary-500:hover {
+  background-color: #D7FCF1;
 }

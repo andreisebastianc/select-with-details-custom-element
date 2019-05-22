@@ -6,9 +6,11 @@
     <title>Hello Glimmer</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script defer src="https://use.fontawesome.com/releases/v5.8.2/js/all.js" integrity="sha384-DJ25uNYET2XCl5ZF++U8eNxPWqcKohUUBUpKGlNLMchM7q4Wjg2CUpjHLaL8yYPH" crossorigin="anonymous"></script>
 
     {{content-for "head"}}
 
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{rootURL}}app.css">
 
     {{content-for "head-footer"}}
@@ -18,6 +20,9 @@
 
     <div id="app"></div>
     <script src="{{rootURL}}app.js"></script>
+    <div style="width: 80%; margin: 1rem auto;">
+      <select-with-details></select-with-details>
+    </div>
 
     {{content-for "body-footer"}}
   </body>
