@@ -1,29 +1,72 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Hello Glimmer</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script defer src="https://use.fontawesome.com/releases/v5.8.2/js/all.js" integrity="sha384-DJ25uNYET2XCl5ZF++U8eNxPWqcKohUUBUpKGlNLMchM7q4Wjg2CUpjHLaL8yYPH" crossorigin="anonymous"></script>
 
-    {{content-for "head"}}
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Hello Glimmer</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script defer src="https://use.fontawesome.com/releases/v5.8.2/js/all.js"
+    integrity="sha384-DJ25uNYET2XCl5ZF++U8eNxPWqcKohUUBUpKGlNLMchM7q4Wjg2CUpjHLaL8yYPH"
+    crossorigin="anonymous"></script>
 
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{rootURL}}app.css">
+  {{content-for "head"}}
 
-    {{content-for "head-footer"}}
-  </head>
-  <body>
-    {{content-for "body"}}
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{rootURL}}app.css">
 
-    <div id="app"></div>
-    <script src="{{rootURL}}app.js"></script>
-    <div style="width: 80%; margin: 1rem auto;">
-      <select-with-details></select-with-details>
-    </div>
+  {{content-for "head-footer"}}
+</head>
 
-    {{content-for "body-footer"}}
-  </body>
+<body>
+  {{content-for "body"}}
+
+  <div id="app"></div>
+  <script src="{{rootURL}}app.js"></script>
+  <div style="width: 80%; margin: 1rem auto;">
+    <select-with-details id="test1" data-visible="3" class="andrei" data-bag="dataBag.test1"></select-with-details>
+  </div>
+  <div style="position:absolute; bottom: 50px; width: 80%; margin: 1rem auto;">
+    <select-with-details id="test1" data-visible="1.5" class="andrei" data-bag="dataBag.test1"></select-with-details>
+  </div>
+
+  <script type="text/javascript">
+    window.dataBag = {
+      test1: [
+        {
+          title: "Vanilie cu fulgi de ciocolată",
+          price: "100 RON",
+          id: "xxx",
+          description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat \
+    mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede."
+        },
+        {
+          title: "Buttercream ciocolată",
+          price: "100 RON",
+          id: "yyy",
+          description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat \
+  mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede."
+        },
+        {
+          title: "Vanilie cu fulgi de ciocolată",
+          price: "100 RON",
+          id: "xxx",
+          description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat \
+    mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede."
+        },
+        {
+          title: "Buttercream ciocolată",
+          price: "100 RON",
+          id: "yyy",
+          description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat \
+  mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede."
+        }
+      ]
+    };
+  </script>
+
+  {{content-for "body-footer"}}
+</body>
+
 </html>
