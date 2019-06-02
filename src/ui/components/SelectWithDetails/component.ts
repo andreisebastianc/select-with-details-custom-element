@@ -1,5 +1,9 @@
 import Component, { tracked } from '@glimmer/component';
 
+function isMobile() {
+  return /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
 interface IOption {
   title: string;
   price?: string;
@@ -9,6 +13,7 @@ interface IOption {
 
 interface ISelectWithDetailsElement extends HTMLElement {
   visible: string;
+  label?: string;
   setOptions(options: IOption[]): void;
 }
 
@@ -19,11 +24,13 @@ export default class SelectWithDetails extends Component {
   @tracked private isExpanded = false;
   @tracked private selected: IOption;
   @tracked private id: string;
+  @tracked private label: string = null;
   @tracked private options: IOption[];
   @tracked private classNameForOptionsPosition: string;
   @tracked private maxVisibleOptions: number;
 
   private clickListener: EventListener = null;
+  private isMobile: boolean;
 
   get withOptions(): boolean {
     return this.options != null && this.options.length !== 0;
@@ -38,9 +45,9 @@ export default class SelectWithDetails extends Component {
   }
 
   @tracked
-  get selectedOption() {
+  get selectedOption(): IOption {
     if (this.options == null) { return null; }
-    return this.selected || this.options[0] || { id: null };
+    return this.selected;
   }
 
   @tracked
@@ -48,9 +55,18 @@ export default class SelectWithDetails extends Component {
     return this.selectedOption ? this.selectedOption.id : '';
   }
 
+  @tracked
+  get selectedDescription() {
+    if (!this.selectedOption.description) {
+      return '';
+    }
+    return this.selectedOption.description;
+  }
+
   constructor(options: object) {
     super(options);
     this.maxVisibleOptions = 4;
+    this.isMobile = isMobile();
     this.id = String(+new Date());
     this.clickListener = this.handleOutsideClick.bind(this);
   }
@@ -91,6 +107,12 @@ export default class SelectWithDetails extends Component {
     this.collapse();
   }
 
+  protected selectMobile(event: HTMLSelectElement) {
+    const value = event.currentTarget.value;
+    const matching = this.options.filter((o) => o.id === value);
+    this.selected = matching[0];
+  }
+
   @tracked
   private get maxVisibleInPixels() {
     return 68 * this.maxVisibleOptions;
@@ -121,9 +143,17 @@ export default class SelectWithDetails extends Component {
     this.maxVisibleOptions = Number(this.element.dataset.visible);
   }
 
+  private readLabel() {
+    if (this.element.dataset == null && this.element.dataset.label == null) {
+      return;
+    }
+    this.label = this.element.dataset.label;
+  }
+
   private setProperties() {
     this.readDatabag();
     this.readVisible();
+    this.readLabel();
     this.id = this.element.id;
   }
 }

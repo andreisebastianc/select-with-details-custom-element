@@ -1,52 +1,88 @@
 <div>
-  <input type="hidden" name="{{this.id}}" value="{{this.selectedValue}}">
-  <!--@todo Implement click outside-->
-  {{#if withData}}
-    <div class="relative">
-      <div 
-        class="flex w-full bg-transparent border border-black p-3 cursor-pointer" 
-        onclick={{action expand}}
-        >
-        <span class="flex-grow text-neutral-100">{{this.selectedOption.title}}</span>
-        {{#if this.selectedOption.price}}
-          <span class="mr-3 text-primary-300">{{this.selectedOption.price}}</span>
-        {{/if}}
-        <i class="fas fa-caret-down"></i>
+  {{#if this.isMobile}}
+    {{#if withData}}
+      <div class="mt-4">
+        <label class="text-black block">
+          {{#if this.label}}
+            <span class="text-sm">{{this.label}}</span>
+          {{/if}}
+          <select 
+            name="{{this.id}}" 
+            class="w-full bg-transparent border border-black p-3" 
+            onchange={{action selectMobile}}
+          >
+            <option value="">Alege o opțiune</option>
+            {{#each this.options key="@index" as |option|}}
+              <option 
+                class="text-lg" 
+                value={{option.id}}
+              >
+                {{option.title}} - {{option.price}}
+              </option>
+            {{/each}}
+          </select>
+          <p class="text-grey-dark text-sm italic">
+            {{this.selectedOption.description}}
+          </p>
+        </label>
       </div>
-      {{#if this.isExpanded}}
-        <ul class="absolute {{this.classNameForOptionsPosition}} bg-white w-full border shadow-xl overflow-auto" style={{this.styleForOptionsList}}>
-          {{#each this.options key="@index" as |option|}}
-            {{#if (eq this.selectedOption option)}}
-              <li 
-                class="cursor-pointer pl-1 pr-3 py-1 bg-primary-600 hover:bg-primary-500"
-                onclick={{action select option}}
-                >
-                <div class="flex items-center">
-                  <i class="fas fa-check text-primary-300 text-sm mr-1"></i>
-                  <span class="flex-grow text-neutral-100">{{option.title}}</span>
-                  <span class="text-xs font-bold text-primary-300">{{option.price}}</span>
-                </div>
-                <p class="text-xs text-neutral-500 pl-5">
-                  {{option.description}}
-                </p>
-              </li>
-            {{else}}
-              <li 
-                class="cursor-pointer pl-6 pr-3 py-1 hover:bg-primary-500"
-                onclick={{action select option}}
-                >
-                <div class="flex items-center">
-                  <span class="flex-grow text-neutral-100">{{option.title}}</span>
-                  <span class="text-xs font-bold text-primary-300">{{option.price}}</span>
-                </div>
-                <p class="text-xs text-neutral-500">
-                  {{option.description}}
-                </p>
-              </li>
-            {{/if}}
-          {{/each}}
-        </ul>
+    {{/if}}
+  {{else}}
+    <input type="hidden" name="{{this.id}}" value="{{this.selectedValue}}">
+    <!--@todo Implement click outside-->
+    {{#if withData}}
+      {{#if this.label}}
+        <span class="text-sm">{{this.label}}</span>
       {{/if}}
-    </div>
+      <div class="relative">
+        <div 
+          class="flex w-full bg-transparent border border-black p-3 cursor-pointer" 
+          onclick={{action expand}}
+          >
+          <span class="flex-grow text-neutral-100">{{this.selectedOption.title}}</span>
+          {{#if this.selectedOption.price}}
+            <span class="mr-3 text-primary-300">{{this.selectedOption.price}}</span>
+          {{/if}}
+          <i class="fas fa-caret-down"></i>
+        </div>
+        {{#if this.isExpanded}}
+          <ul class="absolute {{this.classNameForOptionsPosition}} bg-white w-full border shadow-xl overflow-auto" style={{this.styleForOptionsList}}>
+            {{#each this.options key="@index" as |option|}}
+              {{#if (eq this.selectedOption option)}}
+                <li 
+                  class="cursor-pointer pl-1 pr-3 py-1 bg-primary-600 hover:bg-primary-500"
+                  onclick={{action select option}}
+                  >
+                  <div class="flex items-center">
+                    <i class="fas fa-check text-primary-300 text-sm mr-1"></i>
+                    <span class="flex-grow text-neutral-100">{{option.title}}</span>
+                    <span class="text-xs font-bold text-primary-300">{{option.price}}</span>
+                  </div>
+                  <p class="text-xs text-neutral-500 pl-5">
+                    {{option.description}}
+                  </p>
+                </li>
+              {{else}}
+                <li 
+                  class="cursor-pointer pl-6 pr-3 py-1 hover:bg-primary-500"
+                  onclick={{action select option}}
+                  >
+                  <div class="flex items-center">
+                    <span class="flex-grow text-neutral-100">{{option.title}}</span>
+                    <span class="text-xs font-bold text-primary-300">{{option.price}}</span>
+                  </div>
+                  <p class="text-xs text-neutral-500">
+                    {{option.description}}
+                  </p>
+                </li>
+              {{/if}}
+            {{/each}}
+          </ul>
+        {{/if}}
+      </div>
+      <p class="text-grey-dark text-sm italic">
+        {{this.selectedOption.description}}
+      </p>
+    {{/if}}
   {{/if}}
 </div>
