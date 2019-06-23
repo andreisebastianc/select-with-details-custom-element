@@ -123,8 +123,17 @@ export default class SelectWithDetails extends Component {
     return `max-height: ${this.maxVisibleInPixels}px`;
   }
 
+  private readInitCallback() {
+    const cbName: string = this.element.dataset.cb ;
+    if (cbName != null) {
+      if (window[cbName]) {
+        this.options = window[cbName](this.id);
+      }
+    }
+  }
+
   private readDatabag() {
-    if (this.element.dataset == null && this.element.dataset.bag == null) {
+    if (this.element.dataset.bag == null) {
       return;
     }
     const path = this.element.dataset.bag.split('.');
@@ -152,6 +161,7 @@ export default class SelectWithDetails extends Component {
 
   private setProperties() {
     this.readDatabag();
+    this.readInitCallback();
     this.readVisible();
     this.readLabel();
     this.id = this.element.id;
