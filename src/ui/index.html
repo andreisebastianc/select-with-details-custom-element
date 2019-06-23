@@ -21,42 +21,49 @@
 
 <body>
   {{content-for "body"}}
+  <script type="text/javascript">
+    window.testFunction = (name) => {
+      console.log(name);
+      return window.dataBag.test1;
+    }
+  </script>
 
   <div id="app"></div>
   <script src="{{rootURL}}app.js"></script>
   <div style="width: 80%; margin: 1rem auto;">
     <select-with-details id="test1" data-visible="3" class="andrei" data-bag="dataBag.test1" data-label="Mărimea tortului"></select-with-details>
+    <select-with-details id="test2" data-visible="3" data-cb="testFunction" data-label="Mărimea tortului"></select-with-details>
   </div>
   <div style="position:absolute; bottom: 50px; width: 80%; margin: 1rem auto;">
-    <select-with-details id="test1" data-visible="1.5" class="andrei" data-bag="dataBag.test1"></select-with-details>
+    <select-with-details id="test3" data-visible="1.5" class="andrei" data-bag="dataBag.test1"></select-with-details>
   </div>
 
   <script type="text/javascript">
     window.dataBag = {
       test1: [
         {
-          title: "Vanilie cu fulgi de ciocolată",
+          name: "Vanilie cu fulgi de ciocolată",
           price: "100 RON",
           id: "xxx",
           description: "1 Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat \
     mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede."
         },
         {
-          title: "Buttercream ciocolată",
+          name: "Buttercream ciocolată",
           price: "100 RON",
           id: "yyy",
           description: "2 Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat \
   mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede."
         },
         {
-          title: "Vanilie cu fulgi de ciocolată",
+          name: "Vanilie cu fulgi de ciocolată",
           price: "100 RON",
           id: "zzz",
           description: "3 Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat \
     mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede."
         },
         {
-          title: "Buttercream ciocolată",
+          name: "Buttercream ciocolată",
           price: "100 RON",
           id: "ttt",
           description: "4 Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat \

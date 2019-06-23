@@ -5,7 +5,7 @@ function isMobile() {
 }
 
 interface IOption {
-  title: string;
+  name: string;
   price?: string;
   description?: string;
   id: string;
