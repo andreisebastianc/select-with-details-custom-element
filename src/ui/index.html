@@ -7,13 +7,10 @@
   <title>Hello Glimmer</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script defer src="https://use.fontawesome.com/releases/v5.8.2/js/all.js"
-    integrity="sha384-DJ25uNYET2XCl5ZF++U8eNxPWqcKohUUBUpKGlNLMchM7q4Wjg2CUpjHLaL8yYPH"
-    crossorigin="anonymous"></script>
 
   {{content-for "head"}}
 
-  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/tailwindcss@^1.0.5/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{{rootURL}}app.css">
 
   {{content-for "head-footer"}}
@@ -31,7 +28,7 @@
   <div id="app"></div>
   <script src="{{rootURL}}app.js"></script>
   <div style="width: 80%; margin: 1rem auto;">
-    <select-with-details id="test1" data-visible="3" class="andrei" data-bag="dataBag.test1" data-label="Mărimea tortului"></select-with-details>
+    <select-with-details id="test1" data-visible="3" name="andreo-test" class="andrei" data-bag="dataBag.test1" data-label="Mărimea tortului" placeholder="Test test"></select-with-details>
     <select-with-details id="test2" data-visible="3" data-cb="testFunction" data-label="Mărimea tortului"></select-with-details>
   </div>
   <div style="position:absolute; bottom: 50px; width: 80%; margin: 1rem auto;">
@@ -45,8 +42,7 @@
           name: "Vanilie cu fulgi de ciocolată",
           price: "100 RON",
           id: "xxx",
-          description: "1 Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat \
-    mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede."
+          description: "1 Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat."
         },
         {
           name: "Buttercream ciocolată",

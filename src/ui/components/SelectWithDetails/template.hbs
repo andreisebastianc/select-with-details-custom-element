@@ -7,11 +7,11 @@
             <span class="text-sm">{{this.label}}</span>
           {{/if}}
           <select 
-            name="{{this.id}}" 
+            name="{{this.name}}" 
             class="w-full bg-transparent border border-black p-3" 
             onchange={{action selectMobile}}
           >
-            <option value="">Alege o opțiune</option>
+            <option value="">{{this.placeholder}}</option>
             {{#each this.options key="@index" as |option|}}
               <option 
                 class="text-lg" 
@@ -21,68 +21,68 @@
               </option>
             {{/each}}
           </select>
-          <p class="text-grey-dark text-sm italic">
-            {{this.selectedOption.description}}
-          </p>
         </label>
       </div>
     {{/if}}
   {{else}}
-    <input type="hidden" name="{{this.id}}" value="{{this.selectedValue}}">
-    <!--@todo Implement click outside-->
-    {{#if withData}}
-      {{#if this.label}}
-        <span class="text-sm">{{this.label}}</span>
-      {{/if}}
-      <div class="relative">
-        <div 
-          class="flex w-full bg-transparent border border-black p-3 cursor-pointer" 
-          onclick={{action expand}}
-          >
-          <span class="flex-grow text-neutral-100">{{this.selectedOption.name}}</span>
-          {{#if this.selectedOption.price}}
-            <span class="mr-3 text-primary-300">{{this.selectedOption.price}}</span>
-          {{/if}}
-          <i class="fas fa-caret-down"></i>
-        </div>
-        {{#if this.isExpanded}}
-          <ul class="absolute {{this.classNameForOptionsPosition}} bg-white w-full border shadow-xl overflow-auto" style={{this.styleForOptionsList}}>
-            {{#each this.options key="@index" as |option|}}
-              {{#if (eq this.selectedOption option)}}
-                <li 
-                  class="cursor-pointer pl-1 pr-3 py-1 bg-primary-600 hover:bg-primary-500"
-                  onclick={{action select option}}
-                  >
-                  <div class="flex items-center">
-                    <i class="fas fa-check text-primary-300 text-sm mr-1"></i>
-                    <span class="flex-grow text-neutral-100">{{option.name}}</span>
-                    <span class="text-xs font-bold text-primary-300">{{option.price}}</span>
-                  </div>
-                  <p class="text-xs text-neutral-500 pl-5">
-                    {{option.description}}
-                  </p>
-                </li>
-              {{else}}
-                <li 
-                  class="cursor-pointer pl-6 pr-3 py-1 hover:bg-primary-500"
-                  onclick={{action select option}}
-                  >
-                  <div class="flex items-center">
-                    <span class="flex-grow text-neutral-100">{{option.name}}</span>
-                    <span class="text-xs font-bold text-primary-300">{{option.price}}</span>
-                  </div>
-                  <p class="text-xs text-neutral-500">
-                    {{option.description}}
-                  </p>
-                </li>
-              {{/if}}
-            {{/each}}
-          </ul>
-        {{/if}}
-      </div>
-      <p class="text-grey-dark text-sm italic">
-        {{this.selectedOption.description}}
-      </p>
+    <input type="hidden" name="{{this.name}}" value="{{this.selectedValue}}">
+    {{#if this.label}}
+      <span>{{this.label}}</span>
     {{/if}}
+    <div class="relative">
+      <div 
+        class="flex w-full cursor-pointer bg-transparent border border-gray-600 py-3 px-3 rounded" 
+        onclick={{action expand}}
+        >
+        {{#if this.selectedOption}}
+          <span class="flex-grow">{{this.selectedOption.name}}</span>
+          <span class="mr-3 font-bold text-primary-700">{{this.selectedOption.price}}</span>
+        {{else}}
+          <span class="flex-grow text-primary-600">{{this.placeholder}}</span>
+        {{/if}}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M15.3 9.3a1 1 0 0 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.4l3.3 3.29 3.3-3.3z"/></svg>
+      </div>
+      {{#if this.isExpanded}}
+        <ul class="absolute {{this.classNameForOptionsPosition}} bg-white w-full border shadow-xl overflow-auto z-50" style={{this.styleForOptionsList}}>
+          {{#each this.options key="@index" as |option|}}
+            {{#if (eq this.selectedOption option)}}
+              <li
+                title={{option.description}} 
+                class="cursor-pointer pl-0 pr-3 py-2 bg-primary-600 hover:bg-primary-500"
+                onclick={{action select option}}
+                >
+                <div class="flex items-center">
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                  >
+                    <path
+                      d="m 8.9606674,11.074429 1.6769966,1.664096 4.256991,-4.256991 c 1.216619,-1.0277 2.850847,0.629874 1.805996,1.831796 l -5.159989,5.159989 c -0.501607,0.491674 -1.304389,0.491674 -1.8059961,0 L 7.1546713,12.893325 C 6.10982,11.691405 7.7440479,10.033828 8.9606674,11.061529 Z"
+                    />
+                  </svg>
+                  <span class="flex-grow">{{option.name}}</span>
+                  <span class="text-sm font-bold text-primary-700">{{option.price}}</span>
+                </div>
+              </li>
+            {{else}}
+              <li 
+                title={{option.description}} 
+                class="cursor-pointer pl-6 pr-3 py-2 hover:bg-primary-500"
+                onclick={{action select option}}
+                >
+                <div class="flex items-center">
+                  <span class="flex-grow">{{option.name}}</span>
+                  <span class="text-sm font-bold text-primary-700">{{option.price}}</span>
+                </div>
+              </li>
+            {{/if}}
+          {{/each}}
+        </ul>
+      {{/if}}
+    </div>
+    <p class="text-sm">
+      {{this.selectedOption.description}}
+    </p>
   {{/if}}
 </div>

@@ -25,24 +25,15 @@ export default class SelectWithDetails extends Component {
   @tracked private selected: IOption;
   @tracked private id: string;
   @tracked private label: string = null;
+  @tracked private name: string = null;
   @tracked private options: IOption[];
   @tracked private classNameForOptionsPosition: string;
   @tracked private maxVisibleOptions: number;
+  @tracked private placeholder: string = null;
 
   private clickListener: EventListener = null;
   private isMobile: boolean;
-
-  get withOptions(): boolean {
-    return this.options != null && this.options.length !== 0;
-  }
-
-  @tracked
-  get withData(): boolean {
-    if (this.withOptions) {
-      return true;
-    }
-    return false;
-  }
+  private eventsQueue: CustomEvent[];
 
   @tracked
   get selectedOption(): IOption {
@@ -69,17 +60,30 @@ export default class SelectWithDetails extends Component {
     this.isMobile = isMobile();
     this.id = String(+new Date());
     this.clickListener = this.handleOutsideClick.bind(this);
+    this.placeholder = 'Click to select';
+    this.eventsQueue = [];
   }
 
   public didInsertElement() {
-    this.element.setOptions = (options: IOption[]) => {
-      this.options = options;
-    };
-    setTimeout(this.setProperties.bind(this), 0);
+    setTimeout(() => {
+      this.id = this.element.id;
+      this.element.setOptions = (options: IOption[]) => {
+        this.options = options;
+      };
+      this.setProperties();
+    }, 100);
   }
 
   public willDestroy() {
     document.removeEventListener('click', this.clickListener);
+  }
+
+  public didUpdate() {
+    let event = this.eventsQueue.pop();
+    while (event) {
+      this.element.dispatchEvent(event);
+      event = this.eventsQueue.pop();
+    }
   }
 
   protected handleOutsideClick(event) {
@@ -104,6 +108,7 @@ export default class SelectWithDetails extends Component {
 
   protected select(selected: IOption) {
     this.selected = selected;
+    this.eventsQueue.push(new CustomEvent('set', { detail: selected }));
     this.collapse();
   }
 
@@ -146,17 +151,32 @@ export default class SelectWithDetails extends Component {
   }
 
   private readVisible() {
-    if (this.element.dataset == null && this.element.dataset.visible == null) {
+    if (this.element.dataset == null || this.element.dataset.visible == null) {
       return;
     }
     this.maxVisibleOptions = Number(this.element.dataset.visible);
   }
 
   private readLabel() {
-    if (this.element.dataset == null && this.element.dataset.label == null) {
+    if (this.element.dataset == null || this.element.dataset.label == null) {
       return;
     }
     this.label = this.element.dataset.label;
+  }
+
+  private readName() {
+    debugger;
+    if (this.element.dataset == null || this.element.dataset.name == null) {
+      this.name =  this.element.id;
+    }
+    this.name = this.element.dataset.name;
+  }
+
+  private readPlaceholder() {
+    if (this.element.dataset == null || this.element.dataset.placeholder == null) {
+      return;
+    }
+    this.placeholder = this.element.dataset.placeholder;
   }
 
   private setProperties() {
@@ -164,6 +184,8 @@ export default class SelectWithDetails extends Component {
     this.readInitCallback();
     this.readVisible();
     this.readLabel();
-    this.id = this.element.id;
+    this.readPlaceholder();
+    this.readName();
+    window.dispatchEvent(new CustomEvent('select-with-details', { detail: { id: this.id }}));
   }
 }
