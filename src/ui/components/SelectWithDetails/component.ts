@@ -124,7 +124,7 @@ export default class SelectWithDetails extends Component {
   }
 
   private readInitCallback() {
-    const cbName: string = this.element.dataset.cb ;
+    const cbName: string = this.element.dataset.cb;
     if (cbName != null) {
       if (window[cbName]) {
         this.options = window[cbName](this.id);
