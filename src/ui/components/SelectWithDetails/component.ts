@@ -165,7 +165,6 @@ export default class SelectWithDetails extends Component {
   }
 
   private readName() {
-    debugger;
     if (this.element.dataset == null || this.element.dataset.name == null) {
       this.name =  this.element.id;
     }
