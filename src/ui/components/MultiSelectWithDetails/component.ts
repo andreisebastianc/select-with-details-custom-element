@@ -49,6 +49,11 @@ export default class MultiSelectWithDetails extends Component {
     return this.selected.length !== 0;
   }
 
+  @tracked
+  get withOptions(): boolean {
+    return this.options.length !== 0;
+  }
+
   constructor(options: object) {
     super(options);
     this.maxVisibleOptions = 4;
@@ -58,6 +63,7 @@ export default class MultiSelectWithDetails extends Component {
     this.placeholder = 'Click to select';
     this.eventsQueue = [];
     this.selected = [];
+    this.options = [];
   }
 
   public didInsertElement() {

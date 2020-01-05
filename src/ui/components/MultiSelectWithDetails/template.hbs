@@ -1,73 +1,75 @@
 <div>
-  {{#if this.isMobile}}
-  {{else}}
-    {{#each this.selectedValues key="@index" as |val|}}
-      <input type="hidden" name="{{this.name}}" value="{{val}}">
-    {{/each}}
-    <div class="relative">
-      {{#if this.withSelectedValues}}
-        {{#each this.selected key="@index" as |sel|}}
-          <div class="cursor-default flex items-center multi-select-selected-item my-4 mx-2" title={{sel.description}} >
-            <span class="mr-2 multi-select-selected-item-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm1-9h2a1 1 0 0 1 0 2h-2v2a1 1 0 0 1-2 0v-2H9a1 1 0 0 1 0-2h2V9a1 1 0 0 1 2 0v2z"/></svg>
-            </span>
-            <span class="flex-grow">{{sel.name}}</span>
-            <span class="mr-2 font-bold text-primary-700 multi-select-selected-item-price">{{sel.price}}</span>
-            <button onclick={{action remove sel}} title="Renunță" class="h-8 w-8 flex justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M16.24 14.83a1 1 0 0 1-1.41 1.41L12 13.41l-2.83 2.83a1 1 0 0 1-1.41-1.41L10.59 12 7.76 9.17a1 1 0 0 1 1.41-1.41L12 10.59l2.83-2.83a1 1 0 0 1 1.41 1.41L13.41 12l2.83 2.83z"/></svg>
-            </button>
-          </div>
-        {{/each}}
-      {{else}}
-        <p class="px-3 multi-select-placeholder">
-          {{this.placeholder}}
-        </p>
-      {{/if}}
-      <div class="flex w-full">
-        <button 
-          class="cursor-pointer bg-transparent py-3 px-3 multi-select-add-button"
-          onclick={{action expand}}
-          >
-            <span class="flex-grow text-primary-600">{{this.label}}</span>
-        </button>
-      </div>
-      {{#if this.isExpanded}}
-        <ul class="absolute {{this.classNameForOptionsPosition}} bg-white w-full border shadow-xl overflow-auto z-50" style={{this.styleForOptionsList}}>
-          {{#each this.options key="@index" as |option|}}
-            {{#if (contains this.selected option)}}
-              <li
-                title={{option.description}} 
-                class="pl-0 pr-3 py-2 bg-primary-600 hover:bg-primary-500"
-                >
-                <div class="flex items-center">
-                  <svg
-                    viewBox="0 0 24 24"
-                    width="24"
-                    height="24"
-                  >
-                    <path
-                      d="m 8.9606674,11.074429 1.6769966,1.664096 4.256991,-4.256991 c 1.216619,-1.0277 2.850847,0.629874 1.805996,1.831796 l -5.159989,5.159989 c -0.501607,0.491674 -1.304389,0.491674 -1.8059961,0 L 7.1546713,12.893325 C 6.10982,11.691405 7.7440479,10.033828 8.9606674,11.061529 Z"
-                    />
-                  </svg>
-                  <span class="flex-grow">{{option.name}}</span>
-                  <span class="text-sm font-bold text-primary-700">{{option.price}}</span>
-                </div>
-              </li>
-            {{else}}
-              <li 
-                title={{option.description}} 
-                class="cursor-pointer pl-6 pr-3 py-2 hover:bg-primary-500"
-                onclick={{action select option}}
-                >
-                <div class="flex items-center">
-                  <span class="flex-grow">{{option.name}}</span>
-                  <span class="text-sm font-bold text-primary-700">{{option.price}}</span>
-                </div>
-              </li>
-            {{/if}}
+  {{#if this.withOptions}}
+    {{#if this.isMobile}}
+    {{else}}
+      {{#each this.selectedValues key="@index" as |val|}}
+        <input type="hidden" name="{{this.name}}" value="{{val}}">
+      {{/each}}
+      <div class="relative">
+        {{#if this.withSelectedValues}}
+          {{#each this.selected key="@index" as |sel|}}
+            <div class="cursor-default flex items-center multi-select-selected-item my-4 mx-2" title={{sel.description}} >
+              <span class="mr-2 multi-select-selected-item-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm1-9h2a1 1 0 0 1 0 2h-2v2a1 1 0 0 1-2 0v-2H9a1 1 0 0 1 0-2h2V9a1 1 0 0 1 2 0v2z"/></svg>
+              </span>
+              <span class="flex-grow">{{sel.name}}</span>
+              <span class="mr-2 font-bold text-primary-700 multi-select-selected-item-price">{{sel.price}}</span>
+              <button onclick={{action remove sel}} title="Renunță" class="h-8 w-8 flex justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M16.24 14.83a1 1 0 0 1-1.41 1.41L12 13.41l-2.83 2.83a1 1 0 0 1-1.41-1.41L10.59 12 7.76 9.17a1 1 0 0 1 1.41-1.41L12 10.59l2.83-2.83a1 1 0 0 1 1.41 1.41L13.41 12l2.83 2.83z"/></svg>
+              </button>
+            </div>
           {{/each}}
-        </ul>
-      {{/if}}
-    </div>
+        {{else}}
+          <p class="px-3 multi-select-placeholder">
+            {{this.placeholder}}
+          </p>
+        {{/if}}
+        <div class="flex w-full">
+          <button 
+            class="cursor-pointer bg-transparent py-3 px-3 multi-select-add-button"
+            onclick={{action expand}}
+            >
+              <span class="flex-grow text-primary-600">{{this.label}}</span>
+          </button>
+        </div>
+        {{#if this.isExpanded}}
+          <ul class="absolute {{this.classNameForOptionsPosition}} bg-white w-full border shadow-xl overflow-auto z-50" style={{this.styleForOptionsList}}>
+            {{#each this.options key="@index" as |option|}}
+              {{#if (contains this.selected option)}}
+                <li
+                  title={{option.description}} 
+                  class="pl-0 pr-3 py-2 bg-primary-600 hover:bg-primary-500"
+                  >
+                  <div class="flex items-center">
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                    >
+                      <path
+                        d="m 8.9606674,11.074429 1.6769966,1.664096 4.256991,-4.256991 c 1.216619,-1.0277 2.850847,0.629874 1.805996,1.831796 l -5.159989,5.159989 c -0.501607,0.491674 -1.304389,0.491674 -1.8059961,0 L 7.1546713,12.893325 C 6.10982,11.691405 7.7440479,10.033828 8.9606674,11.061529 Z"
+                      />
+                    </svg>
+                    <span class="flex-grow">{{option.name}}</span>
+                    <span class="text-sm font-bold text-primary-700">{{option.price}}</span>
+                  </div>
+                </li>
+              {{else}}
+                <li 
+                  title={{option.description}} 
+                  class="cursor-pointer pl-6 pr-3 py-2 hover:bg-primary-500"
+                  onclick={{action select option}}
+                  >
+                  <div class="flex items-center">
+                    <span class="flex-grow">{{option.name}}</span>
+                    <span class="text-sm font-bold text-primary-700">{{option.price}}</span>
+                  </div>
+                </li>
+              {{/if}}
+            {{/each}}
+          </ul>
+        {{/if}}
+      </div>
+    {{/if}}
   {{/if}}
 </div>
