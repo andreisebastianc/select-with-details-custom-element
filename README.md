@@ -1,4 +1,4 @@
-# select-with-details
+# custom elements
 
 This README outlines the details of collaborating on this Glimmer application.
 A short introduction of this app could easily go here.
