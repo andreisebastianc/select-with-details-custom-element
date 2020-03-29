@@ -17,12 +17,12 @@ interface ISelectWithDetailsElement extends HTMLElement {
   setOptions(options: IOption[]): void;
 }
 
-export default class SelectWithDetails extends Component {
+export default class MultiSelectWithDetails extends Component {
 
   public element: ISelectWithDetailsElement;
 
   @tracked private isExpanded = false;
-  @tracked private selected: IOption;
+  @tracked private selected: IOption[];
   @tracked private id: string;
   @tracked private label: string = null;
   @tracked private name: string = null;
@@ -35,23 +35,23 @@ export default class SelectWithDetails extends Component {
   private isMobile: boolean;
   private eventsQueue: CustomEvent[];
 
-  @tracked
-  get selectedOption(): IOption {
-    if (this.options == null) { return null; }
-    return this.selected;
+  get selectedOption(): IOption[] {
+    return null;
   }
 
   @tracked
-  get selectedValue(): string {
-    return this.selectedOption ? this.selectedOption.id : '';
+  get selectedValues(): string[] {
+    return this.selected.map((s) => s.id);
   }
 
   @tracked
-  get selectedDescription() {
-    if (!this.selectedOption.description) {
-      return '';
-    }
-    return this.selectedOption.description;
+  get withSelectedValues(): boolean {
+    return this.selected.length !== 0;
+  }
+
+  @tracked
+  get withOptions(): boolean {
+    return this.options.length !== 0;
   }
 
   constructor(options: object) {
@@ -62,6 +62,8 @@ export default class SelectWithDetails extends Component {
     this.clickListener = this.handleOutsideClick.bind(this);
     this.placeholder = 'Click to select';
     this.eventsQueue = [];
+    this.selected = [];
+    this.options = [];
   }
 
   public didInsertElement() {
@@ -95,7 +97,7 @@ export default class SelectWithDetails extends Component {
     if (window.innerHeight - event.clientY < this.maxVisibleInPixels) {
       this.classNameForOptionsPosition = 'bottom-0';
     } else {
-      this.classNameForOptionsPosition = 'top-0';
+      this.classNameForOptionsPosition = 'bottom-0';
     }
     this.isExpanded = true;
     document.addEventListener('click', this.clickListener);
@@ -107,15 +109,13 @@ export default class SelectWithDetails extends Component {
   }
 
   protected select(selected: IOption) {
-    this.selected = selected;
-    this.eventsQueue.push(new CustomEvent('set', { detail: selected }));
+    this.selected = this.selected.concat([selected]);
+    this.eventsQueue.push(new CustomEvent('set', { detail: this.selected }));
     this.collapse();
   }
 
-  protected selectMobile(event: HTMLSelectElement) {
-    const value = event.currentTarget.value;
-    const matching = this.options.filter((o) => o.id === value);
-    this.selected = matching[0];
+  protected remove(selected: IOption) {
+    this.selected = this.selected.filter((sel) => sel.id !== selected.id);
   }
 
   @tracked
@@ -165,10 +165,13 @@ export default class SelectWithDetails extends Component {
   }
 
   private readName() {
+    let name = '';
     if (this.element.dataset == null || this.element.dataset.name == null) {
-      this.name =  this.element.id;
+      name =  this.element.id;
+    } else {
+      name = this.element.dataset.name;
     }
-    this.name = this.element.dataset.name;
+    this.name = `${name}[]`;
   }
 
   private readPlaceholder() {
@@ -185,6 +188,6 @@ export default class SelectWithDetails extends Component {
     this.readLabel();
     this.readPlaceholder();
     this.readName();
-    window.dispatchEvent(new CustomEvent('select-with-details', { detail: { id: this.id }}));
+    window.dispatchEvent(new CustomEvent('multi-select-with-details', { detail: { id: this.id }}));
   }
 }

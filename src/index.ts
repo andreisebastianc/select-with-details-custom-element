@@ -15,5 +15,8 @@ app.registerInitializer({
 });
 
 app.boot().then(() => {
-  initializeCustomElements(app, { 'select-with-details': 'SelectWithDetails' });
+  initializeCustomElements(app, { 
+    'select-with-details': 'SelectWithDetails',
+    'multi-select-with-details': 'MultiSelectWithDetails' 
+  });
 });
