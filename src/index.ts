@@ -15,8 +15,9 @@ app.registerInitializer({
 });
 
 app.boot().then(() => {
-  initializeCustomElements(app, { 
-    'select-with-details': 'SelectWithDetails',
-    'multi-select-with-details': 'MultiSelectWithDetails' 
+  initializeCustomElements(app, {
+    'date-picker': 'DatePicker',
+    'multi-select-with-details': 'MultiSelectWithDetails'
+    'select-with-details': 'SelectWithDetails'
   });
 });
