@@ -36,7 +36,7 @@
         >
         {{#if this.selectedOption}}
           <span class="flex-grow">{{this.selectedOption.name}}</span>
-          <span class="mr-3 font-bold text-primary-700">{{this.selectedOption.price}}</span>
+          <span class="mr-3 font-bold text-primary-700">{{adds-to-price-formatting selectedOption.price}}</span>
         {{else}}
           <span class="flex-grow text-primary-600">{{this.placeholder}}</span>
         {{/if}}
@@ -62,7 +62,7 @@
                     />
                   </svg>
                   <span class="flex-grow">{{option.name}}</span>
-                  <span class="text-sm font-bold text-primary-700">{{option.price}}</span>
+                  <span class="text-sm font-bold text-primary-700">{{adds-to-price-formatting option.price}}</span>
                 </div>
               </li>
             {{else}}
@@ -73,7 +73,7 @@
                 >
                 <div class="flex items-center">
                   <span class="flex-grow">{{option.name}}</span>
-                  <span class="text-sm font-bold text-primary-700">{{option.price}}</span>
+                  <span class="text-sm font-bold text-primary-700">{{adds-to-price-formatting option.price}}</span>
                 </div>
               </li>
             {{/if}}

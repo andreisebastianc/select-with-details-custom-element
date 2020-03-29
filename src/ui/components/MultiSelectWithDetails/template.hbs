@@ -13,16 +13,12 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm1-9h2a1 1 0 0 1 0 2h-2v2a1 1 0 0 1-2 0v-2H9a1 1 0 0 1 0-2h2V9a1 1 0 0 1 2 0v2z"/></svg>
               </span>
               <span class="flex-grow">{{sel.name}}</span>
-              <span class="mr-2 font-bold text-primary-700 multi-select-selected-item-price">{{sel.price}}</span>
+              <span class="mr-2 font-bold text-primary-700 multi-select-selected-item-price">{{adds-to-price-formatting sel.price}}</span>
               <button onclick={{action remove sel}} title="Renunță" class="h-8 w-8 flex justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M16.24 14.83a1 1 0 0 1-1.41 1.41L12 13.41l-2.83 2.83a1 1 0 0 1-1.41-1.41L10.59 12 7.76 9.17a1 1 0 0 1 1.41-1.41L12 10.59l2.83-2.83a1 1 0 0 1 1.41 1.41L13.41 12l2.83 2.83z"/></svg>
               </button>
             </div>
           {{/each}}
-        {{else}}
-          <p class="px-3 multi-select-placeholder">
-            {{this.placeholder}}
-          </p>
         {{/if}}
         <div class="flex w-full">
           <button 
@@ -51,7 +47,7 @@
                       />
                     </svg>
                     <span class="flex-grow">{{option.name}}</span>
-                    <span class="text-sm font-bold text-primary-700">{{option.price}}</span>
+                    <span class="text-sm font-bold text-primary-700">{{adds-to-price-formatting option.price}}</span>
                   </div>
                 </li>
               {{else}}
@@ -62,7 +58,7 @@
                   >
                   <div class="flex items-center">
                     <span class="flex-grow">{{option.name}}</span>
-                    <span class="text-sm font-bold text-primary-700">{{option.price}}</span>
+                    <span class="text-sm font-bold text-primary-700">{{adds-to-price-formatting option.price}}</span>
                   </div>
                 </li>
               {{/if}}
