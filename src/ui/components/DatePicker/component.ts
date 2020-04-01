@@ -56,6 +56,7 @@ export default class DatePicker extends Component {
     @tracked private visibleDate: Date;
     @tracked private blockedDates: {};
     @tracked private isVisible: boolean = false;
+    @tracked private inlineStyle: string = '';
 
     private today: Date;
     private clickListener: EventListener = null;
@@ -93,7 +94,12 @@ export default class DatePicker extends Component {
         this.visibleDate = new Date(this.visibleDate.getFullYear(), this.visibleDate.getMonth() - 1);
     }
 
-    protected showDialog() {
+    protected showDialog(event: MouseEvent) {
+        if (window.innerHeight - event.clientY < 393) {
+            this.inlineStyle = `bottom: ${this.inputHeight}px`;
+        } else {
+            this.inlineStyle = `top: ${this.inputHeight}px`;
+        }
         this.isVisible = true;
         document.addEventListener('click', this.clickListener);
     }
@@ -113,18 +119,6 @@ export default class DatePicker extends Component {
         this.selectedDate = new Date(this.visibleDate.getFullYear(), this.visibleDate.getMonth(), Number(cell.display));
         this.valueLocalized = this.selectedDate.toLocaleDateString();
         this.collapse();
-    }
-
-    get weekDays() {
-        return [
-            'Du',
-            'Lu',
-            'Ma',
-            'Mi',
-            'Jo',
-            'Vi',
-            'Sâ'
-        ];
     }
 
     @tracked
@@ -246,17 +240,28 @@ export default class DatePicker extends Component {
     }
 
     @tracked
-    get topPosition() {
+    get visibleYear() {
+        return this.visibleDate.getFullYear();
+    }
+
+    get weekDays() {
+        return [
+            'Du',
+            'Lu',
+            'Ma',
+            'Mi',
+            'Jo',
+            'Vi',
+            'Sâ'
+        ];
+    }
+
+    get inputHeight() {
         const inputEl = this.element.querySelector('input[type=text]') as HTMLElement;
         if (inputEl) {
             return inputEl.offsetHeight + 5;
         }
         return 0;
-    }
-
-    @tracked
-    get visibleYear() {
-        return this.visibleDate.getFullYear();
     }
 
     get isInThePast() {
