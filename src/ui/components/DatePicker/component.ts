@@ -1,10 +1,5 @@
 import Component, { tracked } from '@glimmer/component';
 
-interface ISelectWithDetailsElement extends HTMLElement {
-    visible: string;
-    label?: string;
-}
-
 interface IDateCell {
     display: string;
     flag: Flag;
