@@ -95,6 +95,7 @@ export default class DatePicker extends Component {
     }
 
     protected showDialog(event: MouseEvent) {
+        event.preventDefault();
         if (window.innerHeight - event.clientY < 393) {
             this.inlineStyle = `bottom: ${this.inputHeight}px`;
         } else {
@@ -117,7 +118,9 @@ export default class DatePicker extends Component {
     protected select(cell) {
         // adding 1 because months start from 0
         this.selectedDate = new Date(this.visibleDate.getFullYear(), this.visibleDate.getMonth(), Number(cell.display));
-        this.valueLocalized = this.selectedDate.toLocaleDateString();
+        const offset = this.selectedDate.getTimezoneOffset();
+        this.selectedDate = new Date(this.selectedDate.getTime() + (offset*60*1000));
+        this.valueLocalized= this.selectedDate.toISOString().split('T')[0];
         this.collapse();
     }
 
@@ -257,7 +260,7 @@ export default class DatePicker extends Component {
     }
 
     get inputHeight() {
-        const inputEl = this.element.querySelector('input[type=text]') as HTMLElement;
+        const inputEl: HTMLElement = this.element.querySelector('input[type=date]');
         if (inputEl) {
             return inputEl.offsetHeight + 5;
         }
