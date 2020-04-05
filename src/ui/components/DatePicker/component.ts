@@ -25,34 +25,15 @@ const months = [
     'Decembrie'
 ];
 
-const incomingBlockedDates: Array<{ day: string, reason: string }> = [
-    {
-        day: '2020-03-30',
-        reason: 'Nu onorăm comenzi în această zi.'
-    },
-    {
-        day: '2020-04-1',
-        reason: 'Nu onorăm comenzi în această zi.'
-    },
-    {
-        day: '2020-04-2',
-        reason: 'Nu onorăm comenzi în această zi.'
-    },
-    {
-        day: '2020-04-3',
-        reason: 'Nu onorăm comenzi în această zi.'
-    }
-];
-
 export default class DatePicker extends Component {
     @tracked private name: string = null;
     @tracked private id: string;
-    @tracked private valueLocalized: string = null;
     @tracked private selectedDate: Date = null;
     @tracked private visibleDate: Date;
-    @tracked private blockedDates: {};
     @tracked private isVisible: boolean = false;
     @tracked private inlineStyle: string = '';
+    @tracked private min: string = '';
+    @tracked private incomingBlockedDates: Array<{ day: string, reason: string }> = [];
 
     private today: Date;
     private clickListener: EventListener = null;
@@ -62,15 +43,8 @@ export default class DatePicker extends Component {
         super(options);
         this.today = new Date();
         this.visibleDate = new Date(this.today.getFullYear(), this.today.getMonth());
-        this.blockedDates = {};
         this.clickListener = this.handleOutsideClick.bind(this);
         this.eventsQueue = [];
-        incomingBlockedDates.forEach((d) => {
-            const date = new Date(d.day); // potential issue: can return Invalid Date
-            const month = date.getMonth();
-            this.blockedDates[month] = this.blockedDates[month] || {};
-            this.blockedDates[month][date.getDate()] = d;
-        });
     }
 
     public didInsertElement() {
@@ -116,6 +90,7 @@ export default class DatePicker extends Component {
         if (value) {
             const date = new Date(value);
             this.visibleDate = new Date(date.getFullYear(), date.getMonth());
+            this.selectedDate = date;
         }
     }
 
@@ -132,14 +107,33 @@ export default class DatePicker extends Component {
     protected select(cell) {
         // adding 1 because months start from 0
         this.selectedDate = new Date(this.visibleDate.getFullYear(), this.visibleDate.getMonth(), Number(cell.display));
-        const offset = this.selectedDate.getTimezoneOffset();
-        this.selectedDate = new Date(this.selectedDate.getTime() + ( offset * 60 * 1000 ) );
-        this.valueLocalized = this.selectedDate.toISOString().split('T')[0];
         this.eventsQueue.push(new CustomEvent('set', { detail: {
-            localizedDate: this.valueLocalized,
+            localizedDate: this.formattedSelectedDate,
             selectedDate: this.selectedDate
         } }));
         this.collapse();
+    }
+
+    @tracked
+    get blockedDates() {
+        const blockedDates = {};
+        this.incomingBlockedDates.forEach((d) => {
+            const date = new Date(d.day); // potential issue: can return Invalid Date
+            const month = date.getMonth();
+            blockedDates[month] = blockedDates[month] || {};
+            blockedDates[month][date.getDate()] = d;
+        });
+        return blockedDates;
+    }
+
+    @tracked
+    get formattedSelectedDate(): string {
+        if (this.selectedDate) {
+            const offset = this.selectedDate.getTimezoneOffset();
+            const fixedDate = new Date(this.selectedDate.getTime() - ( offset * 60 * 1000 ) );
+            return fixedDate.toISOString().split('T')[0];
+        }
+        return '';
     }
 
     @tracked
@@ -147,7 +141,7 @@ export default class DatePicker extends Component {
         let i: number;
         let j: number;
         let leftPadding: number = this.firstDayInVisibleMonth ? this.firstDayInVisibleMonth : 7;
-        const cells = new Array(42);
+        const cells = new Array<IDateCell>(42);
 
         // left padding
         i = 0;
@@ -180,10 +174,30 @@ export default class DatePicker extends Component {
         const isCurrentMonth = this.isCurrentMonth;
         const isInThePast = this.isInThePast;
         const visibleMonth = this.visibleMonth;
+        const visibleYear = this.visibleYear;
         const todayDay = this.today.getDate();
+        let selectedDateDay = null;
+        let selectedDateYear = null;
+        let selectedDateMonth = null;
+
+        if (this.selectedDate) {
+            selectedDateMonth = this.selectedDate.getMonth();
+            selectedDateDay = this.selectedDate.getDate();
+            selectedDateYear = this.selectedDate.getFullYear();
+        }
 
         // start at one to avoid adding 1 for display purposes
         for (i = 1; i <= this.daysInVisibleMonth; i++) {
+            if (selectedDateMonth === visibleMonth && selectedDateYear === visibleYear) {
+                if (i === selectedDateDay) {
+                    cells[i + leftPadding] = {
+                        display: String(i),
+                        flag: 'selected',
+                        title: ''
+                    };
+                    continue;
+                }
+            }
             if (this.blockedDates[visibleMonth]) {
                 let d = this.blockedDates[visibleMonth][i];
                 if (d) {
@@ -311,8 +325,44 @@ export default class DatePicker extends Component {
         }
     }
 
+    private readMinAttribute() {
+        let nameAttr: Attr = this.element.attributes.getNamedItem('min');
+        if (nameAttr) {
+            this.element.attributes.removeNamedItem('min');
+            this.min = nameAttr.value;
+        } else {
+            this.min = '';
+        }
+    }
+
+    private readValue() {
+        let nameAttr: Attr = this.element.attributes.getNamedItem('value');
+        if (nameAttr) {
+            this.element.attributes.removeNamedItem('value');
+            this.selectedDate = new Date(nameAttr.value);
+        } else {
+            this.selectedDate = null;
+        }
+    }
+
+    private readDatabag() {
+      if (this.element.dataset.bag == null) {
+        return;
+      }
+      const path = this.element.dataset.bag.split('.');
+      let r = window;
+      while (path.length) {
+        let p = path.shift();
+        r = r[p];
+      }
+      this.incomingBlockedDates = (r as unknown as Array<{ day: string, reason: string }>);
+    }
+
     private setProperties() {
+        this.readDatabag();
         this.readName();
+        this.readMinAttribute();
+        this.readValue();
         window.dispatchEvent(new CustomEvent(COMPONENT_NAME, { detail: { id: this.id } }));
     }
 }

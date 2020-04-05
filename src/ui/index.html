@@ -33,20 +33,39 @@
     <multi-select-with-details id="test4" data-name="oreo-test" data-cb="testFunction" data-label="Adaugă umplutură" data-placeholder="Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci."></multi-select-with-details>
   </div>
   <div style="position:absolute; bottom: 50px; width: 80%; margin: 1rem auto;">
-    <date-picker name="delivery-date2"></date-picker>
+    <date-picker name="delivery-date2" min="2020-04-06"></date-picker>
     <select-with-details id="test3" data-visible="1.5" class="andrei" data-bag="dataBag.test1"></select-with-details>
   </div>
 
   <div>
-    <input type="date" id="start" name="trip-start"
-       value="2018-07-22"
-       min="2018-01-01" max="2018-12-31">
-
-    <date-picker name="delivery-date"></date-picker>
+    <date-picker name="delivery-date" min="2020-04-06" value="2020-04-06" data-bag="dataBag.blockedDates"></date-picker>
   </div>
 
   <script type="text/javascript">
+
     window.dataBag = {
+      blockedDates: [
+        {
+            day: '2020-03-30',
+            reason: 'Nu onorăm comenzi în această zi.'
+        },
+        {
+            day: '2020-04-1',
+            reason: 'Nu onorăm comenzi în această zi.'
+        },
+        {
+            day: '2020-04-2',
+            reason: 'Nu onorăm comenzi în această zi.'
+        },
+        {
+            day: '2020-04-3',
+            reason: 'Nu onorăm comenzi în această zi.'
+        },
+        {
+            day: '2020-04-7',
+            reason: 'Nu onorăm comenzi în această zi.'
+        }
+      ],
       test1: [
         {
           name: "Vanilie cu fulgi de ciocolată",
