@@ -8,6 +8,8 @@ interface IDateCell {
 
 type Flag = 'padding' | 'blocked' | 'today' | 'selected' | 'usable' | 'past' | 'weekend';
 
+const COMPONENT_NAME = 'DatePicker';
+
 const months = [
     'Ianuarie',
     'Februarie',
@@ -43,7 +45,6 @@ const incomingBlockedDates: Array<{ day: string, reason: string }> = [
 ];
 
 export default class DatePicker extends Component {
-
     @tracked private name: string = null;
     @tracked private id: string;
     @tracked private valueLocalized: string = null;
@@ -55,6 +56,7 @@ export default class DatePicker extends Component {
 
     private today: Date;
     private clickListener: EventListener = null;
+    private eventsQueue: CustomEvent[];
 
     constructor(options: object) {
         super(options);
@@ -62,6 +64,7 @@ export default class DatePicker extends Component {
         this.visibleDate = new Date(this.today.getFullYear(), this.today.getMonth());
         this.blockedDates = {};
         this.clickListener = this.handleOutsideClick.bind(this);
+        this.eventsQueue = [];
         incomingBlockedDates.forEach((d) => {
             const date = new Date(d.day); // potential issue: can return Invalid Date
             const month = date.getMonth();
@@ -75,6 +78,14 @@ export default class DatePicker extends Component {
             this.id = this.element.id;
             this.setProperties();
         }, 100);
+    }
+
+    public didUpdate() {
+      let event = this.eventsQueue.pop();
+      while (event) {
+        this.element.dispatchEvent(event);
+        event = this.eventsQueue.pop();
+      }
     }
 
     public willDestroy() {
@@ -114,8 +125,12 @@ export default class DatePicker extends Component {
         // adding 1 because months start from 0
         this.selectedDate = new Date(this.visibleDate.getFullYear(), this.visibleDate.getMonth(), Number(cell.display));
         const offset = this.selectedDate.getTimezoneOffset();
-        this.selectedDate = new Date(this.selectedDate.getTime() + (offset*60*1000));
-        this.valueLocalized= this.selectedDate.toISOString().split('T')[0];
+        this.selectedDate = new Date(this.selectedDate.getTime() + ( offset * 60 * 1000 ) );
+        this.valueLocalized = this.selectedDate.toISOString().split('T')[0];
+        this.eventsQueue.push(new CustomEvent('set', { detail: {
+            localizedDate: this.valueLocalized,
+            selectedDate: this.selectedDate
+        } }));
         this.collapse();
     }
 
@@ -290,6 +305,6 @@ export default class DatePicker extends Component {
 
     private setProperties() {
         this.readName();
-        window.dispatchEvent(new CustomEvent('multi-select-with-details', { detail: { id: this.id } }));
+        window.dispatchEvent(new CustomEvent(COMPONENT_NAME, { detail: { id: this.id } }));
     }
 }
