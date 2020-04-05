@@ -78,6 +78,7 @@
         type="date"
         value="{{this.valueLocalized}}"
         onclick={{action showDialog}}
+        onchange={{action handleChange}}
     > 
     <input type="hidden" name="{{this.name}}" value={{this.selectedDate}}>
 </div>

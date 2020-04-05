@@ -111,6 +111,14 @@ export default class DatePicker extends Component {
         document.addEventListener('click', this.clickListener);
     }
 
+    protected handleChange(event: Event) {
+        const value: string = (event.currentTarget as HTMLInputElement).value;
+        if (value) {
+            const date = new Date(value);
+            this.visibleDate = new Date(date.getFullYear(), date.getMonth());
+        }
+    }
+
     protected collapse() {
         this.isVisible = false;
         document.removeEventListener('click', this.clickListener);
