@@ -2,7 +2,7 @@
     {{#if this.isVisible}}
     <div 
         tabindex="1"
-        style="width: 380px; top: {{this.topPosition}}px"
+        style="width: 380px; {{this.inlineStyle}}"
         class="absolute border t-4 rounded-md bg-white shadow-lg select-none z-50">
         <div class="p-2">
             <div class="month-indicator flex items-center">
@@ -42,7 +42,11 @@
             <div class="text-center grid grid-cols-7 gap-1">
                 {{#each this.cellsData key="@index" as |cell|}}
                 <div class="date-{{cell.flag}} w-12 h-12 leading-10">
-                    {{#if (eq cell.flag "padding")}}
+                    {{#if (eq cell.flag "selected")}}
+                    <div class="w-full h-full border-green-300 bg-green-200 text-green-800">
+                        {{cell.display}}
+                    </div>
+                    {{else if (eq cell.flag "padding")}}
                     <div class="w-full h-full cursor-not-allowed text-center bg-gray-100">
                     </div>
                     {{else if (eq cell.flag "weekend")}}
@@ -74,11 +78,13 @@
     </div>
     {{/if}}
     <input 
-        style="::-webkit-calendar-picker-indicator: none"
-        class="cursor-pointer bg-transparent border border-gray-600 py-3 px-3 rounded"
-        type="text"
-        value="{{this.valueLocalized}}"
+        class="{{this.inputClasses}}"
+        type="date"
+        required="required"
+        value="{{this.formattedSelectedDate}}"
+        min={{this.min}}
+        name={{this.name}}
         onclick={{action showDialog}}
+        onchange={{action handleChange}}
     > 
-    <input type="hidden" name="{{this.name}}" value={{this.selectedDate}}>
 </div>
