@@ -105,6 +105,12 @@ export default class DatePicker extends Component {
         }
     }
 
+    protected isBlocked(date: Date): boolean {
+        const blockedDates = this.blockedDates;
+        if (blockedDates[date.getMonth()]) {
+            return blockedDates[date.getMonth()][date.getDate()];
+        }
+    }
     protected collapse() {
         this.isVisible = false;
         if (this.min != null) {
