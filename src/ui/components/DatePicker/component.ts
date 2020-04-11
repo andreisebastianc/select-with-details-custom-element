@@ -33,6 +33,7 @@ export default class DatePicker extends Component {
     @tracked private isVisible: boolean = false;
     @tracked private inlineStyle: string = '';
     @tracked private min: string = '';
+    @tracked private withError: boolean = false;
     @tracked private incomingBlockedDates: Array<{ day: string, reason: string }> = [];
 
     private today: Date;
@@ -87,8 +88,18 @@ export default class DatePicker extends Component {
 
     protected handleChange(event: Event) {
         const value: string = (event.currentTarget as HTMLInputElement).value;
+        let withError: boolean = false;
         if (value) {
             const date = new Date(value);
+            if (this.min != null) {
+                if (new Date(this.min) > date) {
+                    withError = true;
+                }
+                if (this.isBlocked(date)) {
+                    withError = true;
+                }
+            }
+            this.withError = withError;
             this.visibleDate = new Date(date.getFullYear(), date.getMonth());
             this.selectedDate = date;
         }
@@ -96,7 +107,16 @@ export default class DatePicker extends Component {
 
     protected collapse() {
         this.isVisible = false;
+        if (this.min != null) {
+            if (new Date(this.min) > this.selectedDate) {
+                this.withError = true;
+            } else if (this.withError) {
+                this.withError = false;
+            }
+        }
         document.removeEventListener('click', this.clickListener);
+        document.removeEventListener('keydown', this.escapeListener);
+    }
     }
 
     protected handleOutsideClick(event) {
@@ -277,6 +297,15 @@ export default class DatePicker extends Component {
     @tracked
     get visibleYear() {
         return this.visibleDate.getFullYear();
+    }
+
+    @tracked
+    get inputClasses(): string {
+        let classes = 'cursor-pointer bg-transparent border border-gray-600 py-3 px-3 rounded';
+        if (this.withError) {
+            classes += ' error text-red-500';
+        }
+        return classes;
     }
 
     get weekDays() {
