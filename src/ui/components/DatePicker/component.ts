@@ -38,6 +38,7 @@ export default class DatePicker extends Component {
 
     private today: Date;
     private clickListener: EventListener = null;
+    private escapeListener: EventListener = null;
     private eventsQueue: CustomEvent[];
 
     constructor(options: object) {
@@ -45,6 +46,7 @@ export default class DatePicker extends Component {
         this.today = new Date();
         this.visibleDate = new Date(this.today.getFullYear(), this.today.getMonth());
         this.clickListener = this.handleOutsideClick.bind(this);
+        this.escapeListener = this.handleEscape.bind(this);
         this.eventsQueue = [];
     }
 
@@ -65,6 +67,7 @@ export default class DatePicker extends Component {
 
     public willDestroy() {
         document.removeEventListener('click', this.clickListener);
+        document.addEventListener('keydown', this.escapeListener);
     }
 
     protected goToNextMonth() {
@@ -84,6 +87,7 @@ export default class DatePicker extends Component {
         }
         this.isVisible = true;
         document.addEventListener('click', this.clickListener);
+        document.addEventListener('keydown', this.escapeListener);
     }
 
     protected handleChange(event: Event) {
@@ -111,6 +115,7 @@ export default class DatePicker extends Component {
             return blockedDates[date.getMonth()][date.getDate()];
         }
     }
+
     protected collapse() {
         this.isVisible = false;
         if (this.min != null) {
@@ -123,6 +128,12 @@ export default class DatePicker extends Component {
         document.removeEventListener('click', this.clickListener);
         document.removeEventListener('keydown', this.escapeListener);
     }
+
+    protected handleEscape(event) {
+        const evt = event || window.event;
+        if (evt.keyCode === 27) {
+            this.collapse();
+        }
     }
 
     protected handleOutsideClick(event) {
