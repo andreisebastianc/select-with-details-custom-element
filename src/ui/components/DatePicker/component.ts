@@ -95,7 +95,7 @@ export default class DatePicker extends Component {
         let withError: boolean = false;
         if (value) {
             const date = new Date(value);
-            if (this.min != null) {
+            if (this.hasMinimumDate) {
                 if (new Date(this.min) > date) {
                     withError = true;
                 }
@@ -118,7 +118,7 @@ export default class DatePicker extends Component {
 
     protected collapse() {
         this.isVisible = false;
-        if (this.min != null) {
+        if (this.hasMinimumDate) {
             if (new Date(this.min) > this.selectedDate) {
                 this.withError = true;
             } else if (this.withError) {
@@ -246,20 +246,26 @@ export default class DatePicker extends Component {
                     continue;
                 }
             }
-            if (isCurrentMonth) {
-                if (i === todayDay) {
-                    cells[i + leftPadding] = {
-                        display: String(i),
-                        flag: 'today'
-                    };
-                    continue;
-                } else if (i < todayDay) {
-                    cells[i + leftPadding] = {
-                        display: String(i),
-                        flag: 'past'
-                    };
-                    continue;
-                }
+            if (isCurrentMonth && i === todayDay) {
+                cells[i + leftPadding] = {
+                    display: String(i),
+                    flag: 'today'
+                };
+                continue;
+            }
+            if (!this.hasMinimumDate) {
+                cells[i + leftPadding] = {
+                    display: String(i),
+                    flag: 'usable'
+                };
+                continue;
+            }
+            if (isCurrentMonth && i < todayDay) {
+                cells[i + leftPadding] = {
+                    display: String(i),
+                    flag: 'past'
+                };
+                continue;
             }
             if (weekendDays.indexOf(i) !== -1) {
                 cells[i + leftPadding] = {
@@ -323,6 +329,10 @@ export default class DatePicker extends Component {
             classes += ' error text-red-500';
         }
         return classes;
+    }
+
+    get hasMinimumDate(): boolean {
+        return this.min !== '';
     }
 
     get weekDays() {
