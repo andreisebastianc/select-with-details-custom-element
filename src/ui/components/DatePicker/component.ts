@@ -35,6 +35,7 @@ export default class DatePicker extends Component {
     @tracked private min: string = '';
     @tracked private withError: boolean = false;
     @tracked private incomingBlockedDates: Array<{ day: string, reason: string }> = [];
+    @tracked private baseClasses: string = '';
 
     private today: Date;
     private clickListener: EventListener = null;
@@ -259,7 +260,7 @@ export default class DatePicker extends Component {
                         display: String(i),
                         flag: 'today-blocked'
                     };
-                continue;
+                    continue;
                 }
                 cells[i + leftPadding] = {
                     display: String(i),
@@ -338,11 +339,10 @@ export default class DatePicker extends Component {
 
     @tracked
     get inputClasses(): string {
-        let classes = 'cursor-pointer bg-transparent border border-gray-600 py-3 px-3 rounded';
         if (this.withError) {
-            classes += ' error text-red-500';
+            return this.baseClasses + ' error text-red-500';
         }
-        return classes;
+        return this.baseClasses;
     }
 
     get hasMinimumDate(): boolean {
@@ -428,9 +428,17 @@ export default class DatePicker extends Component {
       this.incomingBlockedDates = (r as unknown as Array<{ day: string, reason: string }>);
     }
 
+    private readClassnames() {
+        if (this.element != null) {
+            this.baseClasses = this.element.className;
+            this.element.className = 'relative';
+        }
+    }
+
     private setProperties() {
         this.readDatabag();
         this.readName();
+        this.readClassnames();
         this.readMinAttribute();
         this.readValue();
         window.dispatchEvent(new CustomEvent(COMPONENT_NAME, { detail: { id: this.id } }));
