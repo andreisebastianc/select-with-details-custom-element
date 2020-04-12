@@ -1,85 +1,81 @@
 <div class="relative w-32">
     {{#if this.isVisible}}
-    <div 
-        tabindex="1"
-        style="width: 380px; {{this.inlineStyle}}"
-        class="absolute border t-4 rounded-md bg-white shadow-lg select-none z-50">
-        <div class="p-2">
-            <div class="month-indicator flex items-center">
-                {{#if (and this.min this.isCurrentMonth)}}
-                <div class="text-gray-400 hover:text-gray-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"
-                        class="fill-current">
-                        <path class="heroicon-ui"
-                            d="M14.7 15.3a1 1 0 0 1-1.4 1.4l-4-4a1 1 0 0 1 0-1.4l4-4a1 1 0 0 1 1.4 1.4L11.42 12l3.3 3.3z" />
-                    </svg>
-                </div>
-                {{else}}
-                <button class="text-gray-700 hover:text-gray-900" onclick={{action goToPrevMonth}}>
-                    <svg xmlns="http://www.w3.org/2000/svg" vi  ewBox="0 0 24 24" width="32" height="32"
-                        class="fill-current">
-                        <path class="heroicon-ui"
-                            d="M14.7 15.3a1 1 0 0 1-1.4 1.4l-4-4a1 1 0 0 1 0-1.4l4-4a1 1 0 0 1 1.4 1.4L11.42 12l3.3 3.3z" />
-                    </svg>
-                </button>
-                {{/if}}
-                <span class="flex-grow text-center text-gray-800">
-                    {{this.monthName}} {{this.displayYear}}
-                </span>
-                <button class="text-gray-700 hover:text-gray-900" onclick={{action goToNextMonth}}>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"
-                        class="fill-current">
-                        <path class="heroicon-ui"
-                            d="M9.3 8.7a1 1 0 0 1 1.4-1.4l4 4a1 1 0 0 1 0 1.4l-4 4a1 1 0 0 1-1.4-1.4l3.29-3.3-3.3-3.3z" />
-                    </svg>
-                </button>
-            </div>
-            <div class="day-of-week flex text-center text-sm my-2 text-gray-700">
-                {{#each this.weekDays key="@index" as |name|}}
-                <span class="flex-1">{{name}}</span>
-                {{/each}}
-            </div>
-            <div class="text-center grid grid-cols-7 gap-1">
-                {{#each this.cellsData key="@index" as |cell|}}
-                <div class="date-{{cell.flag}} w-12 h-12 leading-10">
-                    {{#if (eq cell.flag "selected")}}
-                    <div class="w-full h-full border border-green-500 bg-green-200 text-green-800 flex items-center justify-center">
-                        {{cell.display}}
-                    </div>
-                    {{else if (eq cell.flag "today")}}
-                    <div class="w-full h-full border border-gray-800 text-gray-300 cursor-not-allowed flex items-center justify-center">
-                        {{cell.display}}
-                    </div>
-                    {{else if (eq cell.flag "padding")}}
-                    <div class="cursor-not-allowed">
-                    </div>
-                    {{else if (eq cell.flag "weekend")}}
-                    <div class="w-full h-full text-gray-500 cursor-not-allowed flex items-center justify-center" title={{cell.title}}>
-                        {{cell.display}}
-                    </div>
-                    {{else if (eq cell.flag "past")}}
-                    <div class="w-full h-full text-gray-500 cursor-not-allowed flex items-center justify-center">
-                        {{cell.display}}
-                    </div>
-                    {{else if (eq cell.flag "blocked")}}
-                    <div class="w-full h-full text-red-800 bg-red-200 cursor-not-allowed border border-red-300 flex items-center justify-center"
-                        title={{cell.title}}>
-                        {{cell.display}}
-                    </div>
-                    {{else if (eq cell.flag "today")}}
-                    <div class="w-full h-full border border-gray-800 text-gray-300 cursor-not-allowed">
-                        {{cell.display}}
-                    </div>
+        <div 
+            tabindex="1"
+            style="width: 380px; {{this.inlineStyle}}"
+            class="absolute border t-4 rounded-md bg-white shadow-lg select-none z-50">
+            <div class="p-2">
+                <div class="month-indicator flex items-center">
+                    {{#if (and this.min this.isCurrentMonth)}}
+                        <div class="text-gray-400 hover:text-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"
+                                class="fill-current">
+                                <path class="heroicon-ui"
+                                    d="M14.7 15.3a1 1 0 0 1-1.4 1.4l-4-4a1 1 0 0 1 0-1.4l4-4a1 1 0 0 1 1.4 1.4L11.42 12l3.3 3.3z" />
+                            </svg>
+                        </div>
                     {{else}}
-                    <button onclick={{action select cell}} class="w-full h-full hover:border-green-300 hover:bg-green-200 hover:text-green-800">
-                        {{cell.display}}
-                    </button>
+                        <button class="text-gray-700 hover:text-gray-900" onclick={{action goToPrevMonth}}>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"
+                                class="fill-current">
+                                <path class="heroicon-ui"
+                                    d="M14.7 15.3a1 1 0 0 1-1.4 1.4l-4-4a1 1 0 0 1 0-1.4l4-4a1 1 0 0 1 1.4 1.4L11.42 12l3.3 3.3z" />
+                            </svg>
+                        </button>
                     {{/if}}
+                    <span class="flex-grow text-center text-gray-800">
+                        {{this.monthName}} {{this.displayYear}}
+                    </span>
+                    <button class="text-gray-700 hover:text-gray-900" onclick={{action goToNextMonth}}>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"
+                            class="fill-current">
+                            <path class="heroicon-ui"
+                                d="M9.3 8.7a1 1 0 0 1 1.4-1.4l4 4a1 1 0 0 1 0 1.4l-4 4a1 1 0 0 1-1.4-1.4l3.29-3.3-3.3-3.3z" />
+                        </svg>
+                    </button>
                 </div>
-                {{/each}}
+                <div class="day-of-week flex text-center text-sm my-2 text-gray-700">
+                    {{#each this.weekDays key="@index" as |name|}}
+                        <span class="flex-1">{{name}}</span>
+                    {{/each}}
+                </div>
+                <div class="text-center grid grid-cols-7 gap-1">
+                    {{#each this.cellsData key="@index" as |cell|}}
+                    <div class="date-{{cell.flag}} w-12 h-12">
+                        {{#if (eq cell.flag "selected")}}
+                        <div class="w-full h-full border border-green-500 bg-green-200 text-green-800 flex items-center justify-center">
+                            {{cell.display}}
+                        </div>
+                        {{else if (eq cell.flag "today")}}
+                        <div class="w-full h-full border border-gray-800 text-gray-300 cursor-not-allowed flex items-center justify-center">
+                            {{cell.display}}
+                        </div>
+                        {{else if (eq cell.flag "padding")}}
+                        <div class="cursor-not-allowed">
+                        </div>
+                        {{else if (eq cell.flag "weekend")}}
+                        <div class="w-full h-full text-gray-500 cursor-not-allowed flex items-center justify-center" title={{cell.title}}>
+                            {{cell.display}}
+                        </div>
+                        {{else if (eq cell.flag "past")}}
+                        <div class="w-full h-full text-gray-500 cursor-not-allowed flex items-center justify-center">
+                            {{cell.display}}
+                        </div>
+                        {{else if (eq cell.flag "blocked")}}
+                        <div class="w-full h-full text-red-800 bg-red-200 cursor-not-allowed border border-red-300 flex items-center justify-center"
+                            title={{cell.title}}>
+                            {{cell.display}}
+                        </div>
+                        {{else}}
+                        <button onclick={{action select cell}} class="w-full h-full hover:border-green-300 hover:bg-green-200 hover:text-green-800">
+                            {{cell.display}}
+                        </button>
+                        {{/if}}
+                    </div>
+                    {{/each}}
+                </div>
             </div>
         </div>
-    </div>
     {{/if}}
     <input 
         class="{{this.inputClasses}}"
