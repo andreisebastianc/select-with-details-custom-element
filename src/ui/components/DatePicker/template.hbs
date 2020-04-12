@@ -15,7 +15,7 @@
                             </svg>
                         </div>
                     {{else}}
-                        <button class="text-gray-700 hover:text-gray-900" onclick={{action goToPrevMonth}}>
+                        <button class="text-gray-700 hover:text-gray-900" onclick={{action goToPrevMonth}} type="button">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"
                                 class="fill-current">
                                 <path class="heroicon-ui"
@@ -26,7 +26,7 @@
                     <span class="flex-grow text-center text-gray-800">
                         {{this.monthName}} {{this.displayYear}}
                     </span>
-                    <button class="text-gray-700 hover:text-gray-900" onclick={{action goToNextMonth}}>
+                    <button class="text-gray-700 hover:text-gray-900" onclick={{action goToNextMonth}} type="button">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"
                             class="fill-current">
                             <path class="heroicon-ui"
@@ -67,7 +67,7 @@
                             {{cell.display}}
                         </div>
                         {{else}}
-                        <button onclick={{action select cell}} class="w-full h-full hover:border-green-300 hover:bg-green-200 hover:text-green-800">
+                        <button onclick={{action select cell}} type="button" class="w-full h-full hover:border-green-300 hover:bg-green-200 hover:text-green-800">
                             {{cell.display}}
                         </button>
                         {{/if}}
