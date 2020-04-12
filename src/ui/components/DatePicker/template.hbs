@@ -43,22 +43,26 @@
                 {{#each this.cellsData key="@index" as |cell|}}
                 <div class="date-{{cell.flag}} w-12 h-12 leading-10">
                     {{#if (eq cell.flag "selected")}}
-                    <div class="w-full h-full border-green-300 bg-green-200 text-green-800">
+                    <div class="w-full h-full border border-green-500 bg-green-200 text-green-800 flex items-center justify-center">
+                        {{cell.display}}
+                    </div>
+                    {{else if (eq cell.flag "today")}}
+                    <div class="w-full h-full border border-gray-800 text-gray-300 cursor-not-allowed flex items-center justify-center">
                         {{cell.display}}
                     </div>
                     {{else if (eq cell.flag "padding")}}
-                    <div class="w-full h-full cursor-not-allowed text-center bg-gray-100">
+                    <div class="cursor-not-allowed">
                     </div>
                     {{else if (eq cell.flag "weekend")}}
-                    <div class="w-full h-full text-gray-400 cursor-not-allowed" title={{cell.title}}>
+                    <div class="w-full h-full text-gray-500 cursor-not-allowed flex items-center justify-center" title={{cell.title}}>
                         {{cell.display}}
                     </div>
                     {{else if (eq cell.flag "past")}}
-                    <div class="w-full h-full text-gray-400 cursor-not-allowed">
+                    <div class="w-full h-full text-gray-500 cursor-not-allowed flex items-center justify-center">
                         {{cell.display}}
                     </div>
                     {{else if (eq cell.flag "blocked")}}
-                    <div class="w-full h-full text-red-800 bg-red-200 cursor-not-allowed border border-red-300"
+                    <div class="w-full h-full text-red-800 bg-red-200 cursor-not-allowed border border-red-300 flex items-center justify-center"
                         title={{cell.title}}>
                         {{cell.display}}
                     </div>
