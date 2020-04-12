@@ -246,13 +246,6 @@ export default class DatePicker extends Component {
                     continue;
                 }
             }
-            if (weekendDays.indexOf(i) !== -1) {
-                cells[i + leftPadding] = {
-                    display: String(i),
-                    flag: 'weekend'
-                };
-                continue;
-            }
             if (isCurrentMonth) {
                 if (i === todayDay) {
                     cells[i + leftPadding] = {
@@ -267,6 +260,13 @@ export default class DatePicker extends Component {
                     };
                     continue;
                 }
+            }
+            if (weekendDays.indexOf(i) !== -1) {
+                cells[i + leftPadding] = {
+                    display: String(i),
+                    flag: 'weekend'
+                };
+                continue;
             }
             if (isInThePast) {
                 cells[i + leftPadding] = {
