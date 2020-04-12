@@ -6,7 +6,7 @@
         class="absolute border t-4 rounded-md bg-white shadow-lg select-none z-50">
         <div class="p-2">
             <div class="month-indicator flex items-center">
-                {{#if this.isCurrentMonth}}
+                {{#if (and this.min this.isCurrentMonth)}}
                 <div class="text-gray-400 hover:text-gray-400">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"
                         class="fill-current">
