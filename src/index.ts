@@ -2,22 +2,32 @@ import { ComponentManager, setPropertyDidChange } from '@glimmer/component';
 import initializeCustomElements from '@glimmer/web-component';
 import App from './main';
 
-const app = new App();
+const components = {
+  'date-picker': 'DatePicker',
+  'multi-select-with-details': 'MultiSelectWithDetails'
+  'select-with-details': 'SelectWithDetails'
+};
 
-setPropertyDidChange(() => {
-  app.scheduleRerender();
-});
+const shouldMount = Object.keys(components)
+                          .reduce(
+                            (accumulator, currentValue) => accumulator && (customElements.get(currentValue) == null),
+                              true
+                            );
 
-app.registerInitializer({
-  initialize(registry) {
-    registry.register(`component-manager:/${app.rootName}/component-managers/main`, ComponentManager);
-  }
-});
+if (shouldMount) {
+  const app = new App();
 
-app.boot().then(() => {
-  initializeCustomElements(app, {
-    'date-picker': 'DatePicker',
-    'multi-select-with-details': 'MultiSelectWithDetails'
-    'select-with-details': 'SelectWithDetails'
+  setPropertyDidChange(() => {
+    app.scheduleRerender();
   });
-});
+
+  app.registerInitializer({
+    initialize(registry) {
+      registry.register(`component-manager:/${app.rootName}/component-managers/main`, ComponentManager);
+    }
+  });
+
+  app.boot().then(() => {
+    initializeCustomElements(app, components);
+  });
+}
