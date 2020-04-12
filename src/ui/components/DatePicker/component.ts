@@ -6,7 +6,7 @@ interface IDateCell {
     title?: string;
 }
 
-type Flag = 'padding' | 'blocked' | 'today' | 'selected' | 'usable' | 'past' | 'weekend';
+type Flag = 'padding' | 'blocked' | 'today' | 'today-blocked' | 'selected' | 'usable' | 'past' | 'weekend';
 
 const COMPONENT_NAME = 'DatePicker';
 
@@ -254,6 +254,13 @@ export default class DatePicker extends Component {
                 }
             }
             if (isCurrentMonth && i === todayDay) {
+                if (this.hasMinimumDate) {
+                    cells[i + leftPadding] = {
+                        display: String(i),
+                        flag: 'today-blocked'
+                    };
+                continue;
+                }
                 cells[i + leftPadding] = {
                     display: String(i),
                     flag: 'today'

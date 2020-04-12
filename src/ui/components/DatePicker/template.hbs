@@ -47,7 +47,11 @@
                             {{cell.display}}
                         </div>
                         {{else if (eq cell.flag "today")}}
-                        <div class="w-full h-full border border-gray-800 text-gray-300 cursor-not-allowed flex items-center justify-center">
+                        <button onclick={{action select cell}} type="button" class="w-full h-full border border-gray-800 hover:border-green-300 hover:bg-green-200 hover:text-green-800">
+                            {{cell.display}}
+                        </button>
+                        {{else if (eq cell.flag "today-blocked")}}
+                        <div class="w-full h-full border border-gray-800 cursor-not-allowed flex items-center justify-center">
                             {{cell.display}}
                         </div>
                         {{else if (eq cell.flag "padding")}}
