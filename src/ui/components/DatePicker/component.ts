@@ -125,6 +125,13 @@ export default class DatePicker extends Component {
                 this.withError = false;
             }
         }
+
+        if (this.selectedDate) {
+            this.visibleDate = new Date(this.selectedDate.getFullYear(), this.selectedDate.getMonth());
+        } else {
+            this.visibleDate = new Date(this.today.getFullYear(), this.today.getMonth());
+        }
+
         document.removeEventListener('click', this.clickListener);
         document.removeEventListener('keydown', this.escapeListener);
     }
